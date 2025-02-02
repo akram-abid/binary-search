@@ -104,7 +104,7 @@ class Tree {
     }
 }
 
-const tree = new Tree([4, 2, 6, 1, 3]);
+const tree = new Tree([4, 2, 6, 1, 3, 5, 7]);
 
 const prettyPrint = (node, prefix = "", isLeft = true) => {
     if (node === null) {
@@ -119,26 +119,85 @@ const prettyPrint = (node, prefix = "", isLeft = true) => {
     }
 };
 
-function insert(root, data){
-    console.log("called")
+function insert(root, data) {
     let ptr = root;
 
-    if(ptr == null){
-        console.log("done", ptr);
+    if (ptr == null) {
         ptr = new Node(data);
-        console.log("after", ptr);
-    }else if(ptr.left == null && data < ptr.data){
+    } else if (ptr.left == null && data < ptr.data) {
         ptr.left = new Node(data);
-    }else if(ptr.right == null && data > ptr.data){
+    } else if (ptr.right == null && data > ptr.data) {
         ptr.right = new Node(data);
-    }
-    else if(data > ptr.data){
+    } else if (data > ptr.data) {
         insert(ptr.right, data);
-    }else{
+    } else {
         insert(ptr.left, data);
     }
 }
-console.log(tree.root.left.left);
-insert(tree.root, 0);
-insert(tree.root, 5)
+
+function remove(root, data) {
+    console.log("we're here again ptr", root);
+    ptr = root;
+    if (ptr == null) {
+        return null;
+    } else if (ptr.data == data) {
+        console.log("i foudn it");
+        if (ptr.left == null && ptr.right == null) {
+            console.log("i am trying to eleminate thsi ", root);
+            return null;
+        }
+    } else {
+        if (data < ptr.data) {
+            console.log("were left ptr.data", ptr.data);
+
+            console.log("went left");
+            ptr.left = remove(ptr.left, data);
+        } else if (data > ptr.data) {
+            console.log("we are right");
+
+            console.log("went right ptr.data", ptr.data);
+            ptr.right = remove(ptr.right, data);
+        }
+    }
+}
+
+function findSmallerRemoval(tree) {
+    let ptr = tree;
+    if (ptr == null) {
+        return null;
+    } else if (ptr.left == null) {
+        return ptr;
+    } else {
+        if (ptr.left.left == null) {
+            const data = ptr.left;
+            ptr.left = null;
+            return data;
+        }
+        return findSmallerRemoval(ptr.left);
+    }
+}
+
+function findBiggerRemoval(tree) {
+    let ptr = tree;
+    if (ptr == null) {
+        return null;
+    } else if (ptr.right == null) {
+        const data = ptr;
+        return data;
+    } else {
+        if (ptr.right.right == null) {
+            const data = ptr.right;
+            ptr.right = null;
+            return data;
+        }
+        return findBiggerRemoval(ptr.right);
+    }
+}
+
+//console.log(tree.root.left.left);
+//insert(tree.root, 0);
+//insert(tree.root, 5);
+//console.log("smaller", findSmallerRemoval(tree.root));
+//console.log("last line bigger", findBiggerRemoval(tree.root));
+remove(tree.root, 5);
 prettyPrint(tree.root);
