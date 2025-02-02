@@ -137,61 +137,43 @@ function insert(root, data) {
 
 function remove(root, data) {
     console.log("we're here again ptr", root);
-    ptr = root;
-    if (ptr == null) {
+    if (root == null) {
         return null;
-    } else if (ptr.data == data) {
+    } else if (root.data == data) {
         console.log("i foudn it");
-        if (ptr.left == null && ptr.right == null) {
+        if (root.left == null && root.right == null) {
             console.log("i am trying to eleminate thsi ", root);
             return null;
+        }  else if (root.left == null) {
+            return root.right;
+        } else if (root.right == null) {
+            return root.left;
+        } else {
+            let successor = findMin(root.right);
+            root.data = successor.data;
+            root.right = remove(root.right, successor.data);
+            return root;
         }
     } else {
-        if (data < ptr.data) {
-            console.log("were left ptr.data", ptr.data);
+        if (data < root.data) {
+            console.log("were left ptr.data", root.data);
 
             console.log("went left");
-            ptr.left = remove(ptr.left, data);
-        } else if (data > ptr.data) {
+            root.left = remove(root.left, data);
+        } else if (data > root.data) {
             console.log("we are right");
 
-            console.log("went right ptr.data", ptr.data);
-            ptr.right = remove(ptr.right, data);
+            console.log("went right ptr.data", root.data);
+            root.right = remove(root.right, data);
         }
+        return root;
     }
 }
-
-function findSmallerRemoval(tree) {
-    let ptr = tree;
-    if (ptr == null) {
-        return null;
-    } else if (ptr.left == null) {
-        return ptr;
-    } else {
-        if (ptr.left.left == null) {
-            const data = ptr.left;
-            ptr.left = null;
-            return data;
-        }
-        return findSmallerRemoval(ptr.left);
+function findMin(node) {
+    while (node.left != null) {
+        node = node.left;
     }
-}
-
-function findBiggerRemoval(tree) {
-    let ptr = tree;
-    if (ptr == null) {
-        return null;
-    } else if (ptr.right == null) {
-        const data = ptr;
-        return data;
-    } else {
-        if (ptr.right.right == null) {
-            const data = ptr.right;
-            ptr.right = null;
-            return data;
-        }
-        return findBiggerRemoval(ptr.right);
-    }
+    return node;
 }
 
 //console.log(tree.root.left.left);
@@ -199,5 +181,6 @@ function findBiggerRemoval(tree) {
 //insert(tree.root, 5);
 //console.log("smaller", findSmallerRemoval(tree.root));
 //console.log("last line bigger", findBiggerRemoval(tree.root));
-remove(tree.root, 5);
+remove(tree.root, 4);
+//console.log(tree.root);
 prettyPrint(tree.root);
