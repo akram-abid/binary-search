@@ -220,17 +220,31 @@ function depth(tree, data) {
     }
 }
 
-function isBalanced(tree) {}
+function isBalanced(tree) {
+    if (tree == null) {
+        return true;
+    } else {
+        return (
+            Math.abs(height(tree.left) - height(tree.right)) <= 1 &&
+            isBalanced(tree.left) &&
+            isBalanced(tree.right)
+        );
+    }
+}
 
 //console.log(tree.root.left.left);
 insert(tree.root, 0);
 //insert(tree.root, 5);
 //console.log("smaller", findSmallerRemoval(tree.root));
 //console.log("last line bigger", findBiggerRemoval(tree.root));
-//remove(tree.root, 7);
+remove(tree.root, 7);
+remove(tree.root, 5);
+remove(tree.root, 0);
+
 //console.log(tree.root);
 prettyPrint(tree.root);
 levelOrder(tree.root, [], (data) => {
     console.log(data.data);
 });
-console.log("the height is ", depth(tree.root, 4));
+//console.log("the height is ", depth(tree.root, 4));
+console.log("is balanced ", isBalanced(tree.root));
