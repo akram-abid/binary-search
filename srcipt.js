@@ -144,7 +144,7 @@ function remove(root, data) {
         if (root.left == null && root.right == null) {
             console.log("i am trying to eleminate thsi ", root);
             return null;
-        }  else if (root.left == null) {
+        } else if (root.left == null) {
             return root.right;
         } else if (root.right == null) {
             return root.left;
@@ -169,6 +169,7 @@ function remove(root, data) {
         return root;
     }
 }
+
 function findMin(node) {
     while (node.left != null) {
         node = node.left;
@@ -176,11 +177,26 @@ function findMin(node) {
     return node;
 }
 
+function levelOrder(tree, qeue = [], callback){
+    if (tree == null){
+        return;
+    }else{
+        callback(tree);
+        qeue.push(tree.left);
+        qeue.push(tree.right);
+        //console.log("the que now ", qeue);
+        if(qeue.length !== 0){
+            levelOrder(qeue.shift(), qeue, callback);
+        }
+    }
+}
+
 //console.log(tree.root.left.left);
 //insert(tree.root, 0);
 //insert(tree.root, 5);
 //console.log("smaller", findSmallerRemoval(tree.root));
 //console.log("last line bigger", findBiggerRemoval(tree.root));
-remove(tree.root, 4);
+//remove(tree.root, 7);
 //console.log(tree.root);
 prettyPrint(tree.root);
+levelOrder(tree.root, [], (data) => { console.log(data.data) });
