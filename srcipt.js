@@ -177,26 +177,60 @@ function findMin(node) {
     return node;
 }
 
-function levelOrder(tree, qeue = [], callback){
-    if (tree == null){
+function levelOrder(tree, qeue = [], callback) {
+    if (tree == null) {
         return;
-    }else{
+    } else {
         callback(tree);
         qeue.push(tree.left);
         qeue.push(tree.right);
         //console.log("the que now ", qeue);
-        if(qeue.length !== 0){
+        if (qeue.length !== 0) {
             levelOrder(qeue.shift(), qeue, callback);
         }
     }
 }
 
+function height(tree) {
+    if (tree == null) {
+        return -1;
+    } else {
+        return max(1 + height(tree.left), 1 + height(tree.right));
+    }
+}
+
+function max(a, b) {
+    if (a > b) return a;
+    else return b;
+}
+
+function depth(tree, data) {
+    if (tree == null) {
+        throw new Error("data doesn't exist");
+    } else {
+        if (tree.data == data) {
+            return 0;
+        } else {
+            if (data > tree.data) {
+                return 1 + depth(tree.right, data);
+            } else {
+                return 1 + depth(tree.left, data);
+            }
+        }
+    }
+}
+
+function isBalanced(tree) {}
+
 //console.log(tree.root.left.left);
-//insert(tree.root, 0);
+insert(tree.root, 0);
 //insert(tree.root, 5);
 //console.log("smaller", findSmallerRemoval(tree.root));
 //console.log("last line bigger", findBiggerRemoval(tree.root));
 //remove(tree.root, 7);
 //console.log(tree.root);
 prettyPrint(tree.root);
-levelOrder(tree.root, [], (data) => { console.log(data.data) });
+levelOrder(tree.root, [], (data) => {
+    console.log(data.data);
+});
+console.log("the height is ", depth(tree.root, 4));
